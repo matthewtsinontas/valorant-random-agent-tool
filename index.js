@@ -3,10 +3,15 @@ const prompts = require('prompts');
 
 const NEW_PLAYER = "New Player";
 const AGENTS = ['Astra', 'Brimstone', 'Breach', 'Cypher', 'Jett', 'KAYO', 'Killjoy', 'Omen', 'Phoenix', 'Raze', 'Reyna', 'Sage', 'Skye', 'Sova', 'Viper', 'Yoru'];
+const DATA_PATH = './data.json';
 
 const mapToTitle = title => ({ title, value: title });
 const prefixNewAccItem = arr => [mapToTitle(NEW_PLAYER), ...arr];
 const pickAgent = (agentPool) => agentPool[Math.floor(Math.random() * agentPool.length)];
+
+if (!fs.existsSync(DATA_PATH)) {
+  fs.writeFileSync(DATA_PATH, "{}");
+}
 
 (async () => {
   const { players } = await prompts({
@@ -19,7 +24,7 @@ const pickAgent = (agentPool) => agentPool[Math.floor(Math.random() * agentPool.
   const heroMap = {};
 
   for (let i = 0; i < players.length; i++) {
-    const data = JSON.parse(fs.readFileSync('./data.json'));
+    const data = JSON.parse(fs.readFileSync(DATA_PATH));
     const name = players[i].toLowerCase();
 
     // If we match the name, just pull from data
@@ -49,7 +54,7 @@ const pickAgent = (agentPool) => agentPool[Math.floor(Math.random() * agentPool.
     // Establish new user or alias
     const { accName, avoids } = await prompts(questions)
     if (accName === NEW_PLAYER) {
-      fs.writeFileSync('./data.json', JSON.stringify({ ...data, [name]: avoids }))
+      fs.writeFileSync(DATA_PATH, JSON.stringify({ ...data, [name]: avoids }))
       heroMap[name] = avoids;
     } else {
       heroMap[name] = data[name];
