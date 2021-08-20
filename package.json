@@ -1,0 +1,11 @@
+{
+  "name": "valorant-random",
+  "version": "1.0.0",
+  "description": "Tool for selecting a random team comp in Valorant",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Matthew Tsinontas (matthewtsinontas@gmail.com)",
+  "dependencies": {
+    "prompts": "^2.4.1"
+  }
+}
